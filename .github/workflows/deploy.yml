@@ -5,21 +5,22 @@ on:
       - master
 
 jobs:
-  deploy:
-    name: Deploy to AWS on main branch push
-    runs-on: ubuntu-latest
+  if: "!contains(github.event.head_commit.message, 'ci skip')"
+    deploy:
+      name: Deploy to AWS on main branch push
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout the files
-        uses: actions/checkout@v2
-      - name: Install npm dependencies
-        run: npm install
-      - name: Run build task
-        run: npm run build --if-present
-      - name: Deploy to Server 1
-        uses: easingthemes/ssh-deploy@v4.1.8
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.TARGET }}
+      steps:
+        - name: Checkout the files
+          uses: actions/checkout@v2
+        - name: Install npm dependencies
+          run: npm install
+        - name: Run build task
+          run: npm run build --if-present
+        - name: Deploy to Server 1
+          uses: easingthemes/ssh-deploy@v4.1.8
+          env:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+            REMOTE_USER: ${{ secrets.REMOTE_USER }}
+            TARGET: ${{ secrets.TARGET }}
