@@ -135,7 +135,11 @@ io.on("connection", (socket) => {
       players[socket.id].bomb = bomb;
       io.emit("bombPlaced", players);
       setTimeout(() => {
-        explodeBomb(bomb);
+        try {
+          explodeBomb(bomb);
+        } catch (error) {
+          console.log("error when bomb explodes");
+        }
         delete players[socket.id]?.bomb;
         io.emit("bombExploded", [players, bomb]);
       }, 3000);
