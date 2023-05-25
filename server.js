@@ -1,11 +1,8 @@
 const express = require("express");
 const http = require("http");
-const { start } = require("repl");
 const socketIo = require("socket.io");
 
 const app = express();
-
-app.use(express.static(__dirname + "/public"));
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -40,21 +37,30 @@ function getRandomPosition() {
 }
 
 function explodeBomb(bomb) {
+  let directions = [
+    [0, 1],
+    [1, 0],
+    [0, -1],
+    [-1, 0],
+  ]; // right, down, left, up
   for (let id in players) {
-    let xDistance = Math.abs(players[id].x - bomb.x);
-    let yDistance = Math.abs(players[id].y - bomb.y);
-    // A player should be removed if they are within the blast radius on either axis
-    if (xDistance <= 3 && yDistance == 0) {
-      // Player is within blast radius horizontally
-      delete players[id];
-    } else if (yDistance <= 3 && xDistance == 0) {
-      // Player is within blast radius vertically
-      delete players[id];
+    for (let d = 0; d < directions.length; d++) {
+      let dx = directions[d][0];
+      let dy = directions[d][1];
+      for (let i = 1; i <= 3; i++) {
+        // starting at 1 because bomb location is considered at 0
+        let x = bomb.x + i * dx;
+        let y = bomb.y + i * dy;
+        if (x >= 0 && x < map.length && y >= 0 && y < map[0].length) {
+          if (map[y][x] === "X") {
+            break; // if a wall is encountered, stop checking in this direction
+          } else if (players[id].x == x && players[id].y == y) {
+            delete players[id]; // if a player is encountered, remove the player and keep checking in this direction
+          }
+        }
+      }
     }
   }
-
-  // Notify all players about the explosion
-  io.emit("bombExploded", bomb);
 }
 
 io.on("connection", (socket) => {
@@ -131,8 +137,8 @@ io.on("connection", (socket) => {
       setTimeout(() => {
         explodeBomb(bomb);
         delete players[socket.id]?.bomb;
-        io.emit("bombExploded", players);
-      }, 5000);
+        io.emit("bombExploded", [players, bomb]);
+      }, 3000);
     }
   });
 });
