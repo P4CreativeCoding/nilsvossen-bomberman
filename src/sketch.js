@@ -1,7 +1,7 @@
 let socket;
 
 function preload() {
-  socket = io.connect("http://localhost:8080");
+  socket = io.connect("bombermanbackend.nilsvossen.de");
 }
 let map = [
   [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
