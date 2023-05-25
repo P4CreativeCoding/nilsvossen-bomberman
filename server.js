@@ -131,7 +131,6 @@ io.on("connection", (socket) => {
   });
 
   socket.on("placeBomb", () => {
-    console.log("placed");
     if (!players[socket.id].bomb) {
       let bomb = {
         x: players[socket.id].x,
