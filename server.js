@@ -49,8 +49,7 @@ function explodeBomb(bomb) {
       for (let d = 0; d < directions.length; d++) {
         let dx = directions[d][0];
         let dy = directions[d][1];
-        for (let i = 1; i <= 3; i++) {
-          // starting at 1 because bomb location is considered at 0
+        for (let i = 0; i <= 3; i++) {
           let x = bomb.x + i * dx;
           let y = bomb.y + i * dy;
           if (x >= 0 && x < map.length && y >= 0 && y < map[0].length) {
@@ -58,8 +57,8 @@ function explodeBomb(bomb) {
               break; // if a wall is encountered, stop checking in this direction
             } else if (
               players[id] &&
-              players[id].x == x &&
-              players[id].y == y
+              players[id].x === x &&
+              players[id].y === y
             ) {
               delete players[id]; // if a player is encountered, remove the player and keep checking in this direction
             }
