@@ -131,12 +131,13 @@ io.on("connection", (socket) => {
   });
 
   socket.on("placeBomb", () => {
-    if (!players[socket.id].bomb) {
+    console.log("placed");
+    if (players[socket.id] && !players[socket.id].bomb) {
       let bomb = {
         x: players[socket.id].x,
         y: players[socket.id].y,
         owner: socket.id,
-        timestamp: new Date().getTime(), // Store the time when the bomb is placed
+        timestamp: new Date().getTime(),
       };
       players[socket.id].bomb = bomb;
       io.emit("bombPlaced", players);
@@ -146,7 +147,9 @@ io.on("connection", (socket) => {
         } catch (error) {
           console.log("error when bomb explodes");
         }
-        delete players[socket.id]?.bomb;
+        if (players[socket.id]) {
+          delete players[socket.id].bomb;
+        }
         io.emit("bombExploded", [players, bomb]);
       }, 3000);
     }
