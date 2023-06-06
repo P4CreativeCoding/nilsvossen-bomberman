@@ -36,7 +36,7 @@ function getRandomPosition() {
   };
 }
 
-function explodeBomb(bomb) {
+function explodeBomb(bomb, placer) {
   let directions = [
     [0, 1],
     [1, 0],
@@ -61,6 +61,7 @@ function explodeBomb(bomb) {
               players[id].y === y
             ) {
               delete players[id]; // if a player is encountered, remove the player and keep checking in this direction
+              players[placer].kills++;
             }
           }
         }
@@ -75,6 +76,7 @@ io.on("connection", (socket) => {
   players[socket.id] = {
     x: startingPosition.x,
     y: startingPosition.y,
+    kills: 0,
   };
   io.emit("playerJoined", players);
 
@@ -142,7 +144,7 @@ io.on("connection", (socket) => {
       io.emit("bombPlaced", players);
       setTimeout(() => {
         try {
-          explodeBomb(bomb);
+          explodeBomb(bomb, socket.id);
         } catch (error) {
           console.log("error when bomb explodes");
         }

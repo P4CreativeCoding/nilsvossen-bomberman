@@ -1,7 +1,7 @@
 let socket;
 
 function preload() {
-  socket = io.connect("bombermanbackend.nilsvossen.de");
+  socket = io.connect("http://localhost:8080");
 }
 let map = [
   [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -25,6 +25,8 @@ function initTexture() {
     }
   }
 }
+
+const killCounter = document.getElementById("killcount");
 
 let tileSize = 40;
 
@@ -98,6 +100,9 @@ function setup() {
 
   socket.on("bombExploded", function (data) {
     players = data[0];
+    killCounter.innerHTML = players[socket.id].kills;
+    console.log(players);
+    console.log("kills" + players[socket.id].kills);
     explodedBombs.push({
       bomb: data[1],
       timestamp: new Date().getTime(),
