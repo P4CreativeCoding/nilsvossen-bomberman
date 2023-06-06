@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bomberman</title>
-  </head>
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
-  <!--
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Bomberman</title>
+	</head>
+	<script src="https://cdn.jsdelivr.net/npm/p5@1.6.0/lib/p5.js"></script>
+	<!--
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
   -->
-  <script src="http://localhost:8080/socket.io/socket.io.js"></script>
-  <script src="sketch.js"></script>
-  <body>
-    <div id="canvas"></div>
-    <div id="killcount">0</div>
-  </body>
+	<body>
+		<div id="canvas"></div>
+		<div>Your kills: <span id="killcount">0</span></div>
+
+		<script src="http://bomberman.nilsvossen.de/socket.io/socket.io.js"></script>
+		<script src="sketch.js"></script>
+	</body>
 </html>
