@@ -31,7 +31,7 @@ Folge diesen Schritten, um das Projekt einzurichten und zu verwenden:
 
 3. Starten Sie den Server:
 
-   ```bash
+   ```
    npm start
    ```
 
