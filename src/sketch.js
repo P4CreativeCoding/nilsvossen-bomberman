@@ -1,5 +1,13 @@
 let socket;
 
+let loggedIn = false;
+let name;
+while (!loggedIn) {
+  name = window.prompt("Name:");
+  if (name) {
+    loggedIn = true;
+  }
+}
 function preload() {
   socket = io();
 }
@@ -25,7 +33,9 @@ function initTexture() {
     }
   }
 }
-module.exports = initTexture;
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = initTexture;
+}
 
 let tileSize = 40;
 
@@ -67,7 +77,7 @@ function setup() {
   stone = loadImage("textures/stone.png");
 
   initTexture();
-  socket.emit("joinGame");
+  socket.emit("joinGame", name);
 
   // Listen for the player's initial position.
   socket.on("playerJoined", function (data) {
