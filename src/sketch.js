@@ -1,7 +1,7 @@
 let socket;
 
 function preload() {
-  socket = io.connect("bombermanbackend.nilsvossen.de");
+  socket = io();
 }
 let map = [
   [" ", " ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -25,6 +25,7 @@ function initTexture() {
     }
   }
 }
+module.exports = initTexture;
 
 let tileSize = 40;
 

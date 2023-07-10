@@ -3,7 +3,7 @@ const http = require("http");
 const socketIo = require("socket.io");
 
 const app = express();
-
+app.use(express.static("src"));
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -29,6 +29,7 @@ function initPlayer() {
   }
   return position;
 }
+module.exports = initPlayer;
 function getRandomPosition() {
   return {
     x: Math.floor(Math.random() * map.length),
@@ -155,6 +156,12 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(8080, () => {
-  console.log("Server is running on port 8080");
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "src", "index.html"));
+});
+
+server.listen(3000, function () {
+  console.log(
+    "Server gestartet. Öffne http://localhost:3000 in einem Webbrowser."
+  );
 });
